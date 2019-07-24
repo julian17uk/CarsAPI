@@ -58,6 +58,14 @@ namespace CarsAPITest.ControllerTests
 
             response.ShouldBeOfType<OkResult>();
         }
+
+        [Fact]
+        public void DeleteCallServiceDelete()
+        {
+            carController.Delete(1);
+
+            mockedService.Verify(mock => mock.DeleteCar(1), Times.Once());
+        }
     }
 
 }
