@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CarsAPI.Controllers;
 using CarsAPI.Models;
 using CarsAPI.Services;
@@ -65,6 +66,18 @@ namespace CarsAPITest.ControllerTests
             carController.Delete(1);
 
             mockedService.Verify(mock => mock.DeleteCar(1), Times.Once());
+        }
+
+        [Fact]
+        public void DeleteThrowNotFound()
+        {
+            int id = 99;
+
+            mockedService.Setup(mock => mock.DeleteCar(id)).Throws<KeyNotFoundException>();
+
+            var response = carController.Delete(id);
+
+            response.ShouldBeOfType<NotFoundResult>();
         }
     }
 
