@@ -165,7 +165,7 @@ namespace CarsAPITest.ControllerTests
 
 			var response = carController.Put(id, carUpdateData);
 
-			response.ShouldBeOfType<NotFoundResult>();
+			response.Result.ShouldBeOfType<NotFoundResult>();
 		}
 	}
 

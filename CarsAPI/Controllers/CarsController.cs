@@ -46,11 +46,18 @@ namespace CarsAPI.Controllers
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public ActionResult<Car> Put(int id, Car car)
+        public ActionResult<Car> Put(int id, Car updateData)
         {
-            Car updatedCar = carService.UpdateCar(id, car);
+            try
+            {
+                Car updatedCar = carService.UpdateCar(id, updateData);
 
-            return Ok(updatedCar);
+                return Ok(updatedCar);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         // DELETE api/values/5
