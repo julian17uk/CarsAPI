@@ -26,7 +26,9 @@ namespace CarsAPI.Services
 
         public Car CreateCar(Car car)
         {
-            throw new NotImplementedException();
+            carRepository.CreateCar(car);
+
+            return null;
         }
 
         public Car UpdateCar(int id, Car car)

@@ -46,7 +46,7 @@ namespace CarsAPITest.ServiceTests
             };
 
             [Fact]
-            public void callRepoCreateCar()
+            public void CallRepoCreateCar()
             {
                 carService.CreateCar(carCreationData);
 
