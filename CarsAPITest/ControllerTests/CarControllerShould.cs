@@ -53,6 +53,33 @@ namespace CarsAPITest.ControllerTests
         }
 
         [Fact]
+        public void DeleteReturnOk()
+        {
+            var response = carController.Delete(1);
+
+            response.ShouldBeOfType<OkResult>();
+        }
+
+        [Fact]
+        public void DeleteCallServiceDelete()
+        {
+            carController.Delete(1);
+
+            mockedService.Verify(mock => mock.DeleteCar(1), Times.Once());
+        }
+
+        [Fact]
+        public void DeleteThrowNotFound()
+        {
+            int id = 99;
+
+            mockedService.Setup(mock => mock.DeleteCar(id)).Throws<KeyNotFoundException>();
+
+            var response = carController.Delete(id);
+
+            response.ShouldBeOfType<NotFoundResult>();
+        }
+
         public void ReturnsRetrievedCar()
         {
             var expectedRetrievedCar = new Car();
@@ -86,10 +113,6 @@ namespace CarsAPITest.ControllerTests
             carController.Get();
 
             mockedService.Verify(mockedService => mockedService.GetAll(), Times.Once());
-
-
-
-
         }
     }
 
