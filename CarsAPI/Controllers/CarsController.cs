@@ -3,14 +3,20 @@ using System.Collections.Generic;
 using CarsAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using CarsAPI.Services;
 
 namespace CarsAPI.Controllers
 {
-
     [Route("api/[controller]")]
     [ApiController]
     public class CarsController : ControllerBase
     {
+        private ICarService carService;
+
+        public CarsController(ICarService carService)
+        {
+            this.carService = carService;
+        }
 
         // GET api/values
         [HttpGet]
@@ -30,6 +36,8 @@ namespace CarsAPI.Controllers
         [HttpPost]
         public ActionResult<Car> Post(Car car)
         {
+            carService.CreateCar(car);
+
             return Ok("ok");
         }
 

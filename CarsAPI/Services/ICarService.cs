@@ -8,9 +8,8 @@ namespace CarsAPI.Services
     {
         IEnumerable<Car> GetAll();
         Car GetCar(int id);
-        Car CreateCar(int id);
+        Car CreateCar(Car car);
         Car UpdateCar(int id);
         void DeleteCar(int id);
-
     }
 }
