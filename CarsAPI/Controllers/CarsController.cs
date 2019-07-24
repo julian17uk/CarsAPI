@@ -52,7 +52,7 @@ namespace CarsAPI.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            return null;
+            return Ok();
         }
     }
 }
