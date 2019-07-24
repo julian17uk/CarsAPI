@@ -122,6 +122,14 @@ namespace CarsAPITest.ControllerTests
 
 			Response.Result.ShouldBeOfType<OkObjectResult>();
 		}
-    }
+
+		[Fact]
+		public void UpdateCallServiceUpdate()
+		{
+			carController.Put(1, testcar);
+
+			mockedService.Verify(mock => mock.UpdateCar(1, testcar), Times.Once());
+		}
+	}
 
 }
