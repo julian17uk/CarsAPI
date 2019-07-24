@@ -16,7 +16,15 @@ namespace CarsAPITest.ControllerTests
         private CarsController carController;
         private Car testcar = new Car();
 
-        public CarControllerShould()
+        // Update data
+		static string make = "fake";
+		static string model = "50";
+		static string colour = "green";
+		static int year = 2019;
+
+		Car carUpdateData = new Car() { Make = make, Model = model, Colour = colour, Year = year };
+
+		public CarControllerShould()
         {
             mockedService = new Mock<ICarService>();
             carController = new CarsController(mockedService.Object);
@@ -114,7 +122,51 @@ namespace CarsAPITest.ControllerTests
 
             mockedService.Verify(mockedService => mockedService.GetAll(), Times.Once());
         }
+      
+        [Fact]
+        public void UpdateReturnOK()
+        {
+          var Response = carController.Put(1, testcar);
 
+          Response.Result.ShouldBeOfType<OkObjectResult>();
+        }
+
+        [Fact]
+        public void UpdateCallServiceUpdate()
+        {
+          int id = 1;
+
+          carController.Put(id, testcar);
+
+          mockedService.Verify(mock => mock.UpdateCar(id, testcar), Times.Once());
+        }
+
+            [Fact]
+            public void UpdateReturnsUpdatedCar()
+        {
+          int id = 1;
+
+          Car expectedUpdatedCar = new Car() { Id = id, Make = make, Model = model, Colour = colour, Year = year };
+
+          mockedService.Setup(mock => mock.UpdateCar(id, carUpdateData)).Returns(expectedUpdatedCar);
+
+          var response = carController.Put(id, carUpdateData);
+          var result = response.Result as OkObjectResult;
+
+          result.Value.ShouldBe(expectedUpdatedCar);
+        }
+
+            [Fact]
+            public void UpdateThrowNotFound()
+        {
+          int id = 99;
+
+          mockedService.Setup(mock => mock.UpdateCar(id, carUpdateData)).Throws<KeyNotFoundException>();
+
+          var response = carController.Put(id, carUpdateData);
+
+          response.Result.ShouldBeOfType<NotFoundResult>();
+        }
 
         [Fact]
         public void GetByIDReturnsRetrievedCar()

@@ -9,7 +9,7 @@ namespace CarsAPI.Services
         IEnumerable<Car> GetAll();
         Car GetCar(int id);
         Car CreateCar(Car car);
-        Car UpdateCar(int id);
+        Car UpdateCar(int id, Car car);
         void DeleteCar(int id);
     }
 }
