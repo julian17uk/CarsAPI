@@ -52,9 +52,15 @@ namespace CarsAPI.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            carService.DeleteCar(id);
-
-            return Ok();
+            try
+            {
+                carService.DeleteCar(id);
+                return Ok();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
     }
 }
