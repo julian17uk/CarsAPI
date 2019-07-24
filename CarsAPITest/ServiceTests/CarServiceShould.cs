@@ -3,6 +3,7 @@ using CarsAPI.Models;
 using CarsAPI.Repositories;
 using CarsAPI.Services;
 using Moq;
+using Shouldly;
 using Xunit;
 
 namespace CarsAPITest.ServiceTests
@@ -51,6 +52,16 @@ namespace CarsAPITest.ServiceTests
                 carService.CreateCar(carCreationData);
 
                 mockedCarRepo.Verify(m => m.CreateCar(carCreationData), Times.Once());
+            }
+
+            [Fact]
+            public void ReturnCreatedCar()
+            {
+                Car createdCar = carService.CreateCar(carCreationData);
+
+                mockedCarRepo.Setup(m => m.CreateCar(carCreationData)).Returns(expectedCarCreated);
+
+                createdCar.ShouldBe(expectedCarCreated);
             }
         }
     }
