@@ -48,9 +48,9 @@ namespace CarsAPI.Controllers
         [HttpPut("{id}")]
         public ActionResult<Car> Put(int id, Car car)
         {
-            carService.UpdateCar(id, car);
+            Car updatedCar = carService.UpdateCar(id, car);
 
-            return Ok("car");
+            return Ok(updatedCar);
         }
 
         // DELETE api/values/5

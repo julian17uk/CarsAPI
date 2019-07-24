@@ -146,9 +146,10 @@ namespace CarsAPITest.ControllerTests
 
 			mockedService.Setup(mock => mock.UpdateCar(id, carUpdateData)).Returns(expectedUpdatedCar);
 
-			var createdCar = carController.Put(id, carUpdateData);
+			var response = carController.Put(id, carUpdateData);
+			var result = response.Result as OkObjectResult;
 
-			createdCar.ShouldBe(expectedUpdatedCar);
+			result.Value.ShouldBe(expectedUpdatedCar);
 		}
 	}
 
