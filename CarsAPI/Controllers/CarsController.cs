@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CarsAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarsAPI.Controllers
@@ -26,8 +27,9 @@ namespace CarsAPI.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<Car> Post(Car car)
         {
+            return null;
         }
 
         // PUT api/values/5
