@@ -57,9 +57,9 @@ namespace CarsAPITest.ServiceTests
             [Fact]
             public void ReturnCreatedCar()
             {
-                Car createdCar = carService.CreateCar(carCreationData);
-
                 mockedCarRepo.Setup(m => m.CreateCar(carCreationData)).Returns(expectedCarCreated);
+
+                Car createdCar = carService.CreateCar(carCreationData);
 
                 createdCar.ShouldBe(expectedCarCreated);
             }

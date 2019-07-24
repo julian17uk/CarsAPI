@@ -26,9 +26,9 @@ namespace CarsAPI.Services
 
         public Car CreateCar(Car car)
         {
-            carRepository.CreateCar(car);
+            Car createdCar = carRepository.CreateCar(car);
 
-            return null;
+            return createdCar;
         }
 
         public Car UpdateCar(int id, Car car)
