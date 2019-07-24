@@ -31,7 +31,16 @@ namespace CarsAPI.Controllers
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
-            return "car";
+            try
+            {
+                var cars = carService.GetCar(id);
+                return Ok(cars);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+
+            }
         }
 
         // POST api/values
