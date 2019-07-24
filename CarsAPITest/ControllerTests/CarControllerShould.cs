@@ -50,6 +50,14 @@ namespace CarsAPITest.ControllerTests
 
             okResult.Value.ShouldBe(expectedCreatedCar);
         }
+
+        [Fact]
+        public void DeleteReturnOk()
+        {
+            var response = carController.Delete(1);
+
+            response.ShouldBeOfType<OkResult>();
+        }
     }
 
 }
