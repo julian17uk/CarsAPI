@@ -126,9 +126,11 @@ namespace CarsAPITest.ControllerTests
 		[Fact]
 		public void UpdateCallServiceUpdate()
 		{
-			carController.Put(1, testcar);
+			int id = 1;
 
-			mockedService.Verify(mock => mock.UpdateCar(1, testcar), Times.Once());
+			carController.Put(id, testcar);
+
+			mockedService.Verify(mock => mock.UpdateCar(id, testcar), Times.Once());
 		}
 	}
 
