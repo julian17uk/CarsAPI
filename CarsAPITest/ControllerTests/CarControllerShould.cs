@@ -114,6 +114,52 @@ namespace CarsAPITest.ControllerTests
 
             mockedService.Verify(mockedService => mockedService.GetAll(), Times.Once());
         }
+
+
+        [Fact]
+        public void GetByIDReturnsRetrievedCar()
+        {
+            var expectedCar = new Car();
+
+            mockedService.Setup(mockedService => mockedService.GetCar(5)).Returns(expectedCar);
+
+            var response = carController.Get(5);
+
+            var okResult = response.Result as OkObjectResult;
+
+            okResult.Value.ShouldBe(expectedCar);
+
+        }
+
+        [Fact]
+        public void GetCarIsCalled()
+        {
+            carController.Get(5);
+
+            mockedService.Verify(mockedService => mockedService.GetCar(5), Times.Once());
+
+        }
+
+        [Fact]
+        public void GetCarReturnsOK()
+        {
+            var Response = carController.Get(5);
+
+            Response.Result.ShouldBeOfType<OkObjectResult>();
+        }
+
+        [Fact]
+        public void GetCarNotFound()
+        {
+
+            mockedService.Setup(mockedService => mockedService.GetCar(57)).Throws<KeyNotFoundException>();
+
+            var response = carController.Get(57);
+
+            response.Result.ShouldBeOfType<NotFoundResult>();
+
+        }
+
     }
 
 }
