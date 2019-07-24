@@ -16,7 +16,15 @@ namespace CarsAPITest.ControllerTests
         private CarsController carController;
         private Car testcar = new Car();
 
-        public CarControllerShould()
+        // Update data
+		static string make = "fake";
+		static string model = "50";
+		static string colour = "green";
+		static int year = 2019;
+
+		Car carUpdateData = new Car() { Make = make, Model = model, Colour = colour, Year = year };
+
+		public CarControllerShould()
         {
             mockedService = new Mock<ICarService>();
             carController = new CarsController(mockedService.Object);
@@ -137,11 +145,7 @@ namespace CarsAPITest.ControllerTests
         public void UpdateReturnsUpdatedCar()
 		{
 			int id = 1;
-			string make = "fake";
-			string model = "50";
-			string colour = "green";
-			int year = 2019;
-			Car carUpdateData = new Car() { Make = make, Model = model, Colour = colour, Year = year };
+
 			Car expectedUpdatedCar = new Car() { Id = id, Make = make, Model = model, Colour = colour, Year = year };
 
 			mockedService.Setup(mock => mock.UpdateCar(id, carUpdateData)).Returns(expectedUpdatedCar);
@@ -150,6 +154,18 @@ namespace CarsAPITest.ControllerTests
 			var result = response.Result as OkObjectResult;
 
 			result.Value.ShouldBe(expectedUpdatedCar);
+		}
+
+        [Fact]
+        public void UpdateThrowNotFound()
+		{
+			int id = 99;
+
+			mockedService.Setup(mock => mock.UpdateCar(id, carUpdateData)).Throws<KeyNotFoundException>();
+
+			var response = carController.Put(id, carUpdateData);
+
+			response.ShouldBeOfType<NotFoundResult>();
 		}
 	}
 
