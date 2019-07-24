@@ -30,7 +30,7 @@ namespace CarsAPI.Controllers
         [HttpPost]
         public ActionResult<Car> Post(Car car)
         {
-            return null;
+            return Ok("ok");
         }
 
         // PUT api/values/5

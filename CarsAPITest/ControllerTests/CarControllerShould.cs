@@ -1,6 +1,8 @@
 ﻿using System;
 using CarsAPI.Controllers;
 using CarsAPI.Models;
+using Microsoft.AspNetCore.Mvc;
+using Shouldly;
 using Xunit;
 
 namespace CarsAPITest.ControllerTests
@@ -14,6 +16,8 @@ namespace CarsAPITest.ControllerTests
         public void AddReturnsOK()
         {
             var Response = carController.Post(testcar);
+
+            Response.Result.ShouldBeOfType<OkObjectResult>();
         }
     }
 
