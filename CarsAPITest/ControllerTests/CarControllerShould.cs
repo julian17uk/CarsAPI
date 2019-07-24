@@ -32,11 +32,23 @@ namespace CarsAPITest.ControllerTests
         [Fact]
         public void CallServiceCreate()
         {
-            Car expectedCreatedCar = new Car();
-
             carController.Post(testcar);
 
             mockedService.Verify(mock => mock.CreateCar(testcar), Times.Once());
+        }
+
+        [Fact]
+        public void ReturnsCreatedCar()
+        {
+            var expectedCreatedCar = new Car();
+
+            mockedService.Setup(mock => mock.CreateCar(testcar)).Returns(expectedCreatedCar);
+
+            var response = carController.Post(testcar);
+
+            var okResult = response.Result as OkObjectResult;
+
+            okResult.Value.ShouldBe(expectedCreatedCar);
         }
     }
 

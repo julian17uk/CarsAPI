@@ -36,9 +36,10 @@ namespace CarsAPI.Controllers
         [HttpPost]
         public ActionResult<Car> Post(Car car)
         {
-            carService.CreateCar(car);
+            var createdcar = carService.CreateCar(car);
 
-            return Ok("ok");
+
+            return Ok(createdcar);
         }
 
         // PUT api/values/5
