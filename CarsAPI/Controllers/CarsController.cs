@@ -20,9 +20,11 @@ namespace CarsAPI.Controllers
 
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<IEnumerable<Car>> Get()
         {
-            return new string[] { "car1", "car2" };
+            var Allcars = carService.GetAll();
+
+            return Ok(Allcars);
         }
 
         // GET api/values/5
