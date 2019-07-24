@@ -52,6 +52,8 @@ namespace CarsAPI.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
+            carService.DeleteCar(id);
+
             return Ok();
         }
     }
