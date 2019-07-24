@@ -132,6 +132,24 @@ namespace CarsAPITest.ControllerTests
 
 			mockedService.Verify(mock => mock.UpdateCar(id, testcar), Times.Once());
 		}
+
+        [Fact]
+        public void UpdateReturnsUpdatedCar()
+		{
+			int id = 1;
+			string make = "fake";
+			string model = "50";
+			string colour = "green";
+			int year = 2019;
+			Car carUpdateData = new Car() { Make = make, Model = model, Colour = colour, Year = year };
+			Car expectedUpdatedCar = new Car() { Id = id, Make = make, Model = model, Colour = colour, Year = year };
+
+			mockedService.Setup(mock => mock.UpdateCar(id, carUpdateData)).Returns(expectedUpdatedCar);
+
+			var createdCar = carController.Put(id, carUpdateData);
+
+			createdCar.ShouldBe(expectedUpdatedCar);
+		}
 	}
 
 }
