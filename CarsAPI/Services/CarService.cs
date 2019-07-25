@@ -30,7 +30,7 @@ namespace CarsAPI.Services
 
             if (response == null)
             {
-                var message = String.Format("Car not found");
+                var message = String.Format($"Car with id {id} not found");
 
                 throw new KeyNotFoundException(message);
 
@@ -53,6 +53,8 @@ namespace CarsAPI.Services
 
         public void DeleteCar(int id)
         {
+            GetCar(id);
+
             carRepository.DeleteCar(id);
         }
     }
