@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CarsAPI.Models;
 using CarsAPI.Repositories;
 using CarsAPI.Services;
@@ -10,8 +11,8 @@ namespace CarsAPITest.ServiceTests
 {
     public class CarServiceTests
     {
-        protected static CarService carService;
-        protected static Mock<ICarRepository> mockedCarRepo;
+        protected CarService carService;
+        protected Mock<ICarRepository> mockedCarRepo;
 
         public CarServiceTests()
         {
@@ -20,7 +21,7 @@ namespace CarsAPITest.ServiceTests
         }
     }
 
-    public class CarServiceCreateShould : CarServiceTests
+    public class CreateShould : CarServiceTests
     {
         // Car creation data
         private static string _make = "new-car";
@@ -66,7 +67,7 @@ namespace CarsAPITest.ServiceTests
         }
     }
 
-    public class CarServiceDeleteShould : CarServiceTests
+    public class DeleteShould : CarServiceTests
     {
         [Fact]
         public void CallRepoDeleteCar()
