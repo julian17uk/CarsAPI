@@ -153,17 +153,20 @@ namespace CarsAPITest.ServiceTests
         }
     }
 
+    public class UpdateShould : CarServiceTests
+    {
+
         [Fact]
         public void RepositoryUpdateCarIsCalled()
         {
 
             var newCar = new Car();
 
-            mockedRepository.Setup(mockedRepository => mockedRepository.UpdateCar(5, newCar)).Returns(newCar);
+            mockedCarRepo.Setup(mockedCarRepo => mockedCarRepo.UpdateCar(5, newCar)).Returns(newCar);
 
             carService.UpdateCar(5, newCar);
 
-            mockedRepository.Verify(mockedRepository => mockedRepository.UpdateCar(5, newCar), Times.Once());
+            mockedCarRepo.Verify(mockedCarRepo => mockedCarRepo.UpdateCar(5, newCar), Times.Once());
 
         }
 
@@ -172,7 +175,7 @@ namespace CarsAPITest.ServiceTests
         {
             var newCar = new Car();
 
-            mockedRepository.Setup(mockedRepository => mockedRepository.UpdateCar(5, newCar)).Returns(newCar);
+            mockedCarRepo.Setup(mockedCarRepo => mockedCarRepo.UpdateCar(5, newCar)).Returns(newCar);
 
             var response = carService.UpdateCar(5, newCar);
 
