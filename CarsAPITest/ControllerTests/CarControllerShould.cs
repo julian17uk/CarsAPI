@@ -10,58 +10,56 @@ using Xunit;
 
 namespace CarsAPITest.ControllerTests
 {
-    public class CarControllerShould
+    public class CarControllerTests
     {
-        private Mock<ICarService> mockedService;
-        private CarsController carController;
-        private Car testcar = new Car();
+        protected Mock<ICarService> mockedService;
+        protected CarsController carController;
+        protected Car testCar = new Car();
 
-        // Update data
-		static string make = "fake";
-		static string model = "50";
-		static string colour = "green";
-		static int year = 2019;
-
-		Car carUpdateData = new Car() { Make = make, Model = model, Colour = colour, Year = year };
-
-		public CarControllerShould()
+        public CarControllerTests()
         {
             mockedService = new Mock<ICarService>();
             carController = new CarsController(mockedService.Object);
         }
+    }
 
+    public class CreateShould : CarControllerTests
+    {
         [Fact]
-        public void AddReturnsOK()
+        public void ReturnOk()
         {
-            var Response = carController.Post(testcar);
+            var response = carController.Post(testCar);
 
-            Response.Result.ShouldBeOfType<OkObjectResult>();
+            response.Result.ShouldBeOfType<OkObjectResult>();
         }
 
         [Fact]
         public void CallServiceCreate()
         {
-            carController.Post(testcar);
+            carController.Post(testCar);
 
-            mockedService.Verify(mock => mock.CreateCar(testcar), Times.Once());
+            mockedService.Verify(m => m.CreateCar(testCar), Times.Once());
         }
 
         [Fact]
-        public void ReturnsCreatedCar()
+        public void ReturnCreatedCar()
         {
             var expectedCreatedCar = new Car();
 
-            mockedService.Setup(mock => mock.CreateCar(testcar)).Returns(expectedCreatedCar);
+            mockedService.Setup(mock => mock.CreateCar(testCar)).Returns(expectedCreatedCar);
 
-            var response = carController.Post(testcar);
+            var response = carController.Post(testCar);
 
             var okResult = response.Result as OkObjectResult;
 
             okResult.Value.ShouldBe(expectedCreatedCar);
         }
+    }
 
+    public class DeleteShould : CarControllerTests
+    {
         [Fact]
-        public void DeleteReturnOk()
+        public void ReturnOk()
         {
             var response = carController.Delete(1);
 
@@ -69,7 +67,7 @@ namespace CarsAPITest.ControllerTests
         }
 
         [Fact]
-        public void DeleteCallServiceDelete()
+        public void CallServiceDelete()
         {
             carController.Delete(1);
 
@@ -87,131 +85,161 @@ namespace CarsAPITest.ControllerTests
 
             response.ShouldBeOfType<NotFoundResult>();
         }
+    }
 
-        public void ReturnsRetrievedCar()
+    public class GetShould : CarControllerTests
+    {
+        [Fact]
+        public void ReturnOk()
         {
-            var expectedRetrievedCar = new Car();
+            var response = carController.Get();
 
-            var expectedAllcars = new List<Car>()
-            {
-                expectedRetrievedCar
-            };
+            response.Result.ShouldBeOfType<OkObjectResult>();
+        }
 
-            mockedService.Setup(mockedService => mockedService.GetAll()).Returns(expectedAllcars);
+        [Fact]
+        public void CallServiceGetAll()
+        {
+            carController.Get();
+
+            mockedService.Verify(m => m.GetAll(), Times.Once());
+        }
+
+        [Fact]
+        public void ReturnAllCars()
+        {
+            var expectedAllCars = new List<Car>();
+
+            mockedService.Setup(m => m.GetAll()).Returns(expectedAllCars);
 
             var response = carController.Get();
 
             var okResult = response.Result as OkObjectResult;
 
-            okResult.Value.ShouldBe(expectedAllcars);
+            okResult.Value.ShouldBe(expectedAllCars);
+        }
+    }
 
+    public class UpdateShould : CarControllerTests
+    {
+        private static readonly int _id = 1;
+        private static readonly int _falseId = 99;
+
+        // Static data properties
+        private static readonly string _make = "Mercedes";
+        private static readonly string _model = "Some-nice-car-name";
+        private static readonly string _colour = "Pink";
+        private static readonly int _year = 2000;
+
+        // Update data for car
+        private Car _carUpdateData = new Car()
+        {
+            Make = _make,
+            Model = _model,
+            Colour = _colour,
+            Year = _year
+        };
+
+        // Expected updated car
+        private Car _expectedUpdatedCar = new Car()
+        {
+            Id = _id,
+            Make = _make,
+            Model = _model,
+            Colour = _colour,
+            Year = _year
+        };
+
+        [Fact]
+        public void ReturnOk()
+        {
+            var response = carController.Put(_id, testCar);
+
+            response.Result.ShouldBeOfType<OkObjectResult>();
         }
 
         [Fact]
-        public void GetReturnsOK()
+        public void CallServiceUpdate()
         {
-            var Response = carController.Get();
+            carController.Put(_id, testCar);
 
-            Response.Result.ShouldBeOfType<OkObjectResult>();
+            mockedService.Verify(m => m.UpdateCar(_id, testCar), Times.Once());
         }
 
         [Fact]
-        public void GetAllIsCalled()
+        public void ReturnUpdatedCar()
         {
-            carController.Get();
+            mockedService.Setup(m => m.UpdateCar(_id, _carUpdateData)).Returns(_expectedUpdatedCar);
 
-            mockedService.Verify(mockedService => mockedService.GetAll(), Times.Once());
-        }
-      
-        [Fact]
-        public void UpdateReturnOK()
-        {
-          var Response = carController.Put(1, testcar);
+            var response = carController.Put(_id, _carUpdateData);
 
-          Response.Result.ShouldBeOfType<OkObjectResult>();
+            var result = response.Result as OkObjectResult;
+
+            result.Value.ShouldBe(_expectedUpdatedCar);
         }
 
         [Fact]
-        public void UpdateCallServiceUpdate()
+        public void ReturnNotFound()
         {
-          int id = 1;
+            mockedService.Setup(m => m.UpdateCar(_falseId, _carUpdateData)).Throws<KeyNotFoundException>();
 
-          carController.Put(id, testcar);
+            var response = carController.Put(_falseId, _carUpdateData);
 
-          mockedService.Verify(mock => mock.UpdateCar(id, testcar), Times.Once());
+            response.Result.ShouldBeOfType<NotFoundResult>();
         }
+    }
 
-            [Fact]
-            public void UpdateReturnsUpdatedCar()
+    public class GetByIdShould : CarControllerTests
+    {
+        private static readonly int _id = 1;
+        private static readonly int _falseId = 99;
+
+        // Expected car retrieved
+        private Car _expectedRetrievedCar = new Car()
         {
-          int id = 1;
+            Id = _id,
+            Make = "Renault",
+            Model = "80-Animal",
+            Colour = "silver",
+            Year = 2009
+        };
 
-          Car expectedUpdatedCar = new Car() { Id = id, Make = make, Model = model, Colour = colour, Year = year };
-
-          mockedService.Setup(mock => mock.UpdateCar(id, carUpdateData)).Returns(expectedUpdatedCar);
-
-          var response = carController.Put(id, carUpdateData);
-          var result = response.Result as OkObjectResult;
-
-          result.Value.ShouldBe(expectedUpdatedCar);
-        }
-
-            [Fact]
-            public void UpdateThrowNotFound()
+        [Fact]
+        public void ReturnOk()
         {
-          int id = 99;
+            var response = carController.Get(_id);
 
-          mockedService.Setup(mock => mock.UpdateCar(id, carUpdateData)).Throws<KeyNotFoundException>();
-
-          var response = carController.Put(id, carUpdateData);
-
-          response.Result.ShouldBeOfType<NotFoundResult>();
+            response.Result.ShouldBeOfType<OkObjectResult>();
         }
 
         [Fact]
-        public void GetByIDReturnsRetrievedCar()
+        public void CallServiceGetCar()
         {
-            var expectedCar = new Car();
+            carController.Get(_id);
 
-            mockedService.Setup(mockedService => mockedService.GetCar(5)).Returns(expectedCar);
+            mockedService.Verify(m => m.GetCar(_id), Times.Once());
+        }
 
-            var response = carController.Get(5);
+        [Fact]
+        public void ReturnSingleCar()
+        {
+            mockedService.Setup(m => m.GetCar(_id)).Returns(_expectedRetrievedCar);
+
+            var response = carController.Get(_id);
 
             var okResult = response.Result as OkObjectResult;
 
-            okResult.Value.ShouldBe(expectedCar);
-
+            okResult.Value.ShouldBe(_expectedRetrievedCar);
         }
 
         [Fact]
-        public void GetCarIsCalled()
+        public void ReturnNotFound()
         {
-            carController.Get(5);
+            mockedService.Setup(m => m.GetCar(_falseId)).Throws<KeyNotFoundException>();
 
-            mockedService.Verify(mockedService => mockedService.GetCar(5), Times.Once());
-
-        }
-
-        [Fact]
-        public void GetCarReturnsOK()
-        {
-            var Response = carController.Get(5);
-
-            Response.Result.ShouldBeOfType<OkObjectResult>();
-        }
-
-        [Fact]
-        public void GetCarNotFound()
-        {
-
-            mockedService.Setup(mockedService => mockedService.GetCar(57)).Throws<KeyNotFoundException>();
-
-            var response = carController.Get(57);
+            var response = carController.Get(_falseId);
 
             response.Result.ShouldBeOfType<NotFoundResult>();
-
         }
-
     }
-
 }
