@@ -9,7 +9,7 @@ namespace CarsAPI.Repositories
         IEnumerable<Car> GetAll();
         Car GetCar(int id);
         Car CreateCar(Car car);
-        Car UpdateCar(Car car);
+        Car UpdateCar(int id, Car car);
         void DeleteCar(int id);
     }
 }

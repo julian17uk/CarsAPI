@@ -48,7 +48,17 @@ namespace CarsAPI.Services
 
         public Car UpdateCar(int id, Car car)
         {
-            throw new NotImplementedException();
+            var response = carRepository.UpdateCar(id, car);
+
+            if (response == null)
+            {
+                var message = String.Format("Car not found");
+
+                throw new KeyNotFoundException(message);
+            }
+
+            return response;
+
         }
 
         public void DeleteCar(int id)

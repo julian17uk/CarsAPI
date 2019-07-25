@@ -141,7 +141,7 @@ namespace CarsAPITest.ServiceTests
 
             actualCar.ShouldBe(_expectedCar);
         }
-
+        
         [Fact]
         public void ThrowKeyNotFoundException()
         {
@@ -150,6 +150,42 @@ namespace CarsAPITest.ServiceTests
                 carService.GetCar(99);
             }
             ).Message.ShouldBe("Car with id 99 not found");
+        }
+    }
+
+        [Fact]
+        public void RepositoryUpdateCarIsCalled()
+        {
+
+            var newCar = new Car();
+
+            mockedRepository.Setup(mockedRepository => mockedRepository.UpdateCar(5, newCar)).Returns(newCar);
+
+            carService.UpdateCar(5, newCar);
+
+            mockedRepository.Verify(mockedRepository => mockedRepository.UpdateCar(5, newCar), Times.Once());
+
+        }
+
+        [Fact]
+        public void RepositoryUpdateCarReturnsCar()
+        {
+            var newCar = new Car();
+
+            mockedRepository.Setup(mockedRepository => mockedRepository.UpdateCar(5, newCar)).Returns(newCar);
+
+            var response = carService.UpdateCar(5, newCar);
+
+            response.ShouldBe(newCar);
+        }
+
+        [Fact]
+        public void UpdateCarNotFound()
+        {
+            var newCar = new Car();
+
+            Should.Throw<KeyNotFoundException>(() => carService.UpdateCar(5, newCar)).Message.ShouldBe("Car not found");
+
         }
     }
 }
