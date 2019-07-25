@@ -41,7 +41,9 @@ namespace CarsAPI.Services
 
         public Car CreateCar(Car car)
         {
-            throw new NotImplementedException();
+            Car createdCar = carRepository.CreateCar(car);
+
+            return createdCar;
         }
 
         public Car UpdateCar(int id, Car car)
@@ -51,7 +53,7 @@ namespace CarsAPI.Services
 
         public void DeleteCar(int id)
         {
-            throw new NotImplementedException();
+            carRepository.DeleteCar(id);
         }
     }
 }
