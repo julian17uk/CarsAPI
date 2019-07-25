@@ -16,12 +16,27 @@ namespace CarsAPI.Services
 
         public IEnumerable<Car> GetAll()
         {
-            throw new NotImplementedException();
+
+            var response = carRepository.GetAll();
+
+            return response;
+
         }
 
         public Car GetCar(int id)
         {
-            throw new NotImplementedException();
+
+            var response = carRepository.GetCar(id);
+
+            if (response == null)
+            {
+                var message = String.Format("Car not found");
+
+                throw new KeyNotFoundException(message);
+
+            }
+            return response;
+
         }
 
         public Car CreateCar(Car car)
