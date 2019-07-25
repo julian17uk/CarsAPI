@@ -38,7 +38,7 @@ namespace CarsAPI.Services
 
         public void DeleteCar(int id)
         {
-            throw new NotImplementedException();
+            carRepository.DeleteCar(id);
         }
     }
 }
