@@ -7,13 +7,15 @@ namespace CarsAPI.Repositories
 {
     public class SQLCarRepository : DbContext, ICarRepository
     {
+        public virtual DbSet<Car> Cars { get; set; }
+
+
         public SQLCarRepository(DbContextOptions<SQLCarRepository> options) : base(options)
         {
         }
 
 
 
-        public virtual DbSet<Car> Cars { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
