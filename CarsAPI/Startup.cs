@@ -30,7 +30,7 @@ namespace CarsAPI
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            var connection = "Server=localhost;Database=cardb;Trusted_Connection=True;";
+            var connection = "Server=localhost;Database=cardb;User Id=SA;Password=<Passw0rd>;";
             services.AddDbContext<SQLCarRepository>(options => options.UseSqlServer(connection));
 
             services.AddScoped<ICarRepository, SQLCarRepository>();
