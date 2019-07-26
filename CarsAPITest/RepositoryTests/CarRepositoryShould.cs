@@ -79,6 +79,39 @@ namespace CarsAPITest.RepositoryTests
         }
     }
 
+
+    public class DeleteShould : CarRepositoryShould
+    {
+        static private Car carToDelete = new Car();
+
+        public DeleteShould() : base()
+        {
+            using (var repo = new SQLCarRepository(options))
+            {
+                repo.CreateCar(carToDelete);
+            }
+        }
+
+        [Fact]
+        public void RemoveCarFromDb()
+        {
+            using (var repo = new SQLCarRepository(options))
+            {
+                repo.Cars.Count().ShouldBe(1);
+
+                repo.DeleteCar(1);
+            }
+
+            using (var repo = new SQLCarRepository(options))
+            {
+                repo.Cars.Count().ShouldBe(0);
+
+                repo.Cars.Contains(carToDelete).ShouldBeFalse();
+            }
+        }
+    }
+
+
     public class GetAllShould : CarRepositoryShould
     {
         Car CarToCreate = new Car()
@@ -193,6 +226,7 @@ namespace CarsAPITest.RepositoryTests
             {
                 repo.CreateCar(CarToCreate);
             }
+
 
             using (var Repo = new SQLCarRepository(options))
             {
