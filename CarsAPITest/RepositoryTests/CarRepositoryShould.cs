@@ -78,41 +78,36 @@ namespace CarsAPITest.RepositoryTests
         }
     }
 
-    //public class GetAllShould : CarRepositoryShould
-    //{
-    //    Car CarToCreate = new Car()
-    //    {
-    //        Make = "Ford",
-    //        Model = "F150",
-    //        Colour = "Silver",
-    //        Year = 2017
-    //    };
+    public class DeleteShould : CarRepositoryShould
+    {
+        static private Car carToDelete = new Car();
 
-    //    Car ExpectedCar = new Car()
-    //    {
-    //        Id = 1,
-    //        Make = "Ford",
-    //        Model = "F150",
-    //        Colour = "Silver",
-    //        Year = 2017
-    //    };
+        public DeleteShould() : base()
+        {
+            using (var repo = new SQLCarRepository(options))
+            {
+                repo.CreateCar(carToDelete);
+            }
+        }
 
-    //    [Fact]
-    //    public void GetAllCarsFromTable()
-    //    {
-    //        using (var Repo = new SQLCarRepository(options))
-    //        {
-    //            Repo.Add(CarToCreate);
+        [Fact]
+        public void RemoveCarFromDb()
+        {
+            using (var repo = new SQLCarRepository(options))
+            {
+                repo.Cars.Count().ShouldBe(1);
 
-    //            var GetAllCars = Repo.GetAll();
+                repo.DeleteCar(1);
+            }
 
-    //            GetAllCars.Contains(ExpectedCar).ShouldBeTrue();
+            using (var repo = new SQLCarRepository(options))
+            {
+                repo.Cars.Count().ShouldBe(0);
 
-    //        }
-    //    }
-
-
-    //}
+                repo.Cars.Contains(carToDelete).ShouldBeFalse();
+            }
+        }
+    }
 }
 
 
