@@ -2,6 +2,7 @@
 using System.Linq;
 using CarsAPI.Models;
 using CarsAPI.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -78,6 +79,7 @@ namespace CarsAPITest.RepositoryTests
         }
     }
 
+
     public class DeleteShould : CarRepositoryShould
     {
         static private Car carToDelete = new Car();
@@ -108,6 +110,153 @@ namespace CarsAPITest.RepositoryTests
             }
         }
     }
-}
 
+
+    public class GetAllShould : CarRepositoryShould
+    {
+        Car CarToCreate = new Car()
+        {
+            Make = "Ford",
+            Model = "F150",
+            Colour = "Silver",
+            Year = 2017
+        };
+
+        Car ExpectedCar = new Car()
+        {
+            Id = 1,
+            Make = "Ford",
+            Model = "F150",
+            Colour = "Silver",
+            Year = 2017
+        };
+
+        [Fact]
+        public void GetAllCarsFromTable()
+        {
+            using (var Repo = new SQLCarRepository(options))
+            {
+                Repo.CreateCar(CarToCreate);
+
+                var GetAllCars = Repo.GetAll();
+
+                GetAllCars.Contains(ExpectedCar).ShouldBeTrue();
+
+            }
+        }
+    }
+        public class GetByIdShould : CarRepositoryShould
+        {
+            Car CarToCreate = new Car()
+            {
+                Make = "Ford",
+                Model = "F150",
+                Colour = "Silver",
+                Year = 2017
+            };
+
+            Car ExpectedCar = new Car()
+            {
+                Id = 1,
+                Make = "Ford",
+                Model = "F150",
+                Colour = "Silver",
+                Year = 2017
+            };
+
+            [Fact]
+            public void GetCarByIdFromTable()
+            {
+                using (var Repo = new SQLCarRepository(options))
+                {
+                    Repo.CreateCar(CarToCreate);
+
+                    var GetCarById = Repo.GetCar(1);
+
+                    GetCarById.Equals(ExpectedCar).ShouldBeTrue();
+
+                }
+            }
+
+            [Fact]
+            public void GetCarByIdNotFound()
+            {
+                using (var Repo = new SQLCarRepository(options))
+                {
+                    var GetCarById = Repo.GetCar(99);
+
+                    GetCarById.ShouldBeNull();
+                }
+            }
+        }
+
+    public class UpdateCarShould : CarRepositoryShould
+    {
+        Car CarToCreate = new Car()
+        {
+            Make = "Ford",
+            Model = "F150",
+            Colour = "Silver",
+            Year = 2017
+        };
+
+        Car CarToUpdate = new Car()
+        {
+            Id = 1,
+            Make = "BMW",
+            Model = "3 series",
+            Colour = "Blue",
+            Year = 2015
+        };
+
+
+        Car ExpectedCar = new Car()
+        {
+            Id = 1,
+            Make = "BMW",
+            Model = "3 series",
+            Colour = "Blue",
+            Year = 2015
+        };
+
+        [Fact]
+        public void UpdateCarReturnsUpdatedCar()
+        {
+            using (var repo = new SQLCarRepository(options))
+            {
+                repo.CreateCar(CarToCreate);
+            }
+
+
+            using (var Repo = new SQLCarRepository(options))
+            {
+                var UpdatedCar = Repo.UpdateCar(CarToUpdate);
+
+                UpdatedCar.Equals(ExpectedCar).ShouldBeTrue();
+            }
+
+        }
+
+        [Fact]
+        public void UpdateCarInDB()
+        {
+            using (var repo = new SQLCarRepository(options))
+            {
+                repo.CreateCar(CarToCreate);
+            }
+
+            using (var repo = new SQLCarRepository(options))
+            {
+                repo.UpdateCar(CarToUpdate);
+            }
+
+            using (var repo = new SQLCarRepository(options))
+            {
+                repo.Cars.Single().Equals(ExpectedCar).ShouldBeTrue();
+            }
+        }
+    }
+
+
+}
 

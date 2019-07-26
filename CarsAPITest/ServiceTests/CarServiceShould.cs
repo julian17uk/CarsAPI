@@ -162,11 +162,12 @@ namespace CarsAPITest.ServiceTests
 
             var newCar = new Car();
 
-            mockedCarRepo.Setup(mockedCarRepo => mockedCarRepo.UpdateCar(5, newCar)).Returns(newCar);
+            mockedCarRepo.Setup(mockedCarRepo => mockedCarRepo.GetCar(5)).Returns(newCar);
+            mockedCarRepo.Setup(mockedCarRepo => mockedCarRepo.UpdateCar(newCar)).Returns(newCar);
 
             carService.UpdateCar(5, newCar);
 
-            mockedCarRepo.Verify(mockedCarRepo => mockedCarRepo.UpdateCar(5, newCar), Times.Once());
+            mockedCarRepo.Verify(mockedCarRepo => mockedCarRepo.UpdateCar(newCar), Times.Once());
 
         }
 
@@ -175,7 +176,8 @@ namespace CarsAPITest.ServiceTests
         {
             var newCar = new Car();
 
-            mockedCarRepo.Setup(mockedCarRepo => mockedCarRepo.UpdateCar(5, newCar)).Returns(newCar);
+            mockedCarRepo.Setup(mockedCarRepo => mockedCarRepo.GetCar(5)).Returns(newCar);
+            mockedCarRepo.Setup(mockedCarRepo => mockedCarRepo.UpdateCar(newCar)).Returns(newCar);
 
             var response = carService.UpdateCar(5, newCar);
 
@@ -187,7 +189,7 @@ namespace CarsAPITest.ServiceTests
         {
             var newCar = new Car();
 
-            Should.Throw<KeyNotFoundException>(() => carService.UpdateCar(5, newCar)).Message.ShouldBe("Car not found");
+            Should.Throw<KeyNotFoundException>(() => carService.UpdateCar(5, newCar)).Message.ShouldBe("Car with id 5 not found");
 
         }
     }

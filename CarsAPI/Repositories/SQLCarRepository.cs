@@ -27,12 +27,14 @@ namespace CarsAPI.Repositories
 
         public IEnumerable<Car> GetAll()
         {
-            throw new NotImplementedException();
+            return Cars;
         }
 
         public Car GetCar(int id)
         {
-            throw new NotImplementedException();
+                var cars = Cars.Find(id);
+                return cars;
+           
         }
 
         public Car CreateCar(Car car)
@@ -42,9 +44,12 @@ namespace CarsAPI.Repositories
             return car;
         }
 
-        public Car UpdateCar(int id, Car car)
+        public Car UpdateCar(Car car)
         {
-            throw new NotImplementedException();
+            Cars.Update(car);
+            SaveChanges();
+            return car;
+
         }
 
         public void DeleteCar(int id)
