@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CarsAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -48,7 +49,9 @@ namespace CarsAPI.Repositories
 
         public void DeleteCar(int id)
         {
-            throw new NotImplementedException();
+            Car carToDelete = Cars.SingleOrDefault(q => q.Id == id);
+            Cars.Remove(carToDelete);
+            SaveChanges();
         }
 
         public SQLCarRepository()
