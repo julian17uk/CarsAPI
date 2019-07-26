@@ -15,8 +15,6 @@ namespace CarsAPI.Repositories
         }
 
 
-
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
