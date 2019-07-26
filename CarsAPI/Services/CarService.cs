@@ -48,14 +48,14 @@ namespace CarsAPI.Services
 
         public Car UpdateCar(int id, Car car)
         {
-            var response = carRepository.UpdateCar(id, car);
+            var CarToUpdate = GetCar(id);
 
-            if (response == null)
-            {
-                var message = String.Format("Car not found");
+            CarToUpdate.Make = car.Make;
+            CarToUpdate.Model = car.Model;
+            CarToUpdate.Colour = car.Colour;
+            CarToUpdate.Year = car.Year;
 
-                throw new KeyNotFoundException(message);
-            }
+            var response = carRepository.UpdateCar(CarToUpdate);
 
             return response;
 
