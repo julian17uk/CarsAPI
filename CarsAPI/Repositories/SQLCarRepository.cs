@@ -10,7 +10,7 @@ namespace CarsAPI.Repositories
         public virtual DbSet<Car> Cars { get; set; }
 
 
-        public SQLCarRepository(DbContextOptions<SQLCarRepository> options) : base(options)
+        public SQLCarRepository(DbContextOptions options) : base(options)
         {
         }
 
@@ -38,7 +38,9 @@ namespace CarsAPI.Repositories
 
         public Car CreateCar(Car car)
         {
-            throw new NotImplementedException();
+            Cars.Add(car);
+            SaveChanges();
+            return car;
         }
 
         public Car UpdateCar(int id, Car car)

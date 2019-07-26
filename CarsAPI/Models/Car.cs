@@ -8,5 +8,21 @@ namespace CarsAPI.Models
         public string Model { get; set; }
         public string Colour { get; set; }
         public int Year { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() == typeof(Car)) {
+                Car car = obj as Car;
+                return car.Id == Id &&
+                    car.Make == Make &&
+                    car.Model == Model &&
+                    car.Colour == Colour &&
+                    car.Year == Year;
+            }
+            return false;
+        }
+
     }
+
+
 }
